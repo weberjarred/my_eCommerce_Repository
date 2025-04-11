@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Vendor Dashboard</h2>
+    <!-- Button to create a new store -->
+    <a href="{% url 'store:create_store' %}" class="btn btn-success mb-3">Create New Store</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Store Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for store in stores %}
+            <tr>
+                <td>{{ store.name }}</td>
+                <td>{{ store.description }}</td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <!-- Edit store button -->
+                        <a href="{% url 'store:edit_store' store.id %}" class="btn btn-primary">Edit Store</a>
+                        <!-- Delete store button -->
+                        <a href="{% url 'store:delete_store' store.id %}" class="btn btn-danger">Delete Store</a>
+                        <!-- Button to add a product to this store -->
+                        <a href="{% url 'products:create_product' store.id %}" class="btn btn-success">Add Product</a>
+        
+                        <!-- New "View Store Products" button -->
+                        <a href="{% url 'store:store_products' store.id %}" class="btn btn-info">View Store Products</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">You have not created any stores yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

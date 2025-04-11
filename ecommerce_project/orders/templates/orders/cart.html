@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Item Total</th>
+                <th></th>  <!-- Empty header for Remove column -->    
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>R {{ item.item_total }}</td>
+                <td>
+                    <!-- Link to remove the product -->
+                    <a href="{% url 'orders:remove_item' item.product.id %}" class="text-danger">
+                        <i class="fas fa-trash"></i> Remove
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Total: R {{ total }}</h3>
+    <div class="d-flex gap-1">
+        <!-- "Checkout" button -->
+        <a href="{% url 'orders:checkout' %}" class="btn btn-primary">Checkout</a>
+        <!-- "Back to Products" button -->
+        <a href="{% url 'products:product_list' %}" class="btn btn-secondary">
+            Go Back to Product List
+        </a>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

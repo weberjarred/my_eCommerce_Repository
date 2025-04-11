@@ -1,0 +1,95 @@
+/* navbar colour */
+.navbar-custom-black {
+  background-color: #000000 !important;
+  /* Pure black */
+}
+
+/* shopping cart colour */
+.navbar .fa-shopping-cart {
+  color: #fff;
+  /* Force white if needed */
+}
+
+/* text colours */
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff !important;
+}
+
+/* Override default hamburger icon with a custom 3-line icon */
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg stroke='%23fff' fill='none' stroke-width='2' viewBox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' height='100%25' width='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='3' y1='6' x2='21' y2='6'/%3E%3Cline x1='3' y1='12' x2='21' y2='12'/%3E%3Cline x1='3' y1='18' x2='21' y2='18'/%3E%3C/svg%3E") !important;
+  background-size: 1.5rem 1.5rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Remove grey border and background from navbar toggler */
+.navbar-dark .navbar-toggler {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Footer offset */
+.footer-offset {
+  margin-left: 1rem;
+  /* or adjust as needed */
+}
+
+/* ====== Cart and Badge screen location ====== */
+
+/* Default: on small screens, let cart container be adjusted via JS/CSS as needed */
+@media (max-width: 992px) {
+  #cartContainer:not(.nav-expanded) {
+    /* When collapsed, you may choose to push it left */
+    margin-right: auto;
+    /* Push to the left within its container */
+  }
+
+  #cartContainer.nav-expanded {
+    margin-right: 0;
+    /* Adjust if you want it different when expanded */
+  }
+}
+
+/* For large screens (maximized window): push cart container to far right */
+@media (min-width: 992px) {
+  .cart-container {
+    margin-right: 0 !important;
+    /* Ensure no extra right margin */
+  }
+}
+
+@media (max-width: 992px) {
+
+  /* When the window is small, position the collapsible nav absolutely */
+  #navbarNav {
+    position: absolute;
+    top: 100%;
+    /* Place it directly below the top bar */
+    left: 0;
+    width: 100%;
+    background-color: #000;
+    /* Same as your navbar (or navbar-custom-black) */
+    z-index: 1000;
+    /* Ensure it overlays content below */
+  }
+}
+
+
+/* ====== Hamburger menu text and screen edge edits ====== */
+@media (max-width: 992px) {
+
+  /* If your collapsible element has the ID #navbarNav: */
+  #navbarNav.show {
+    /* Add horizontal padding when expanded */
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+  /* Optionally, if you want the <ul class="navbar-nav"> to have padding too: */
+  #navbarNav.show .navbar-nav {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+}

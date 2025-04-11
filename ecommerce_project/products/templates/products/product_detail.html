@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>{{ product.name }}</h2>
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+    {% endif %}
+    <p>{{ product.description }}</p>
+    <p>Price: R {{ product.price }}</p>
+    <!-- Show stock if user is buyer or vendor -->
+    <p>Stock: {{ product.stock }}</p>
+
+    <!-- Only show Edit/Delete buttons if user is a vendor -->
+    {% if user.is_authenticated and user.profile.account_type == "vendor" %}
+        <!-- add button to edit product -->
+        <a href="{% url 'products:edit_product' product.id %}" class="btn btn-primary">Edit</a>
+        <!-- add button to delete product -->
+        <a href="{% url 'products:delete_product' product.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
+
+    <!-- Buyer-only stock display and Add to Cart form -->
+    <!-- Only show Add to Cart if user is a buyer -->
+    {% if user.is_authenticated and user.profile.account_type == "buyer" %}
+    <!-- Both buttons (and quantity input) line up at the same height—placed in a flex container  -->
+    <div class="d-flex align-items-center">
+        <form method="POST" action="{% url 'orders:add_to_cart' product.id %}" class="d-inline-block me-2">
+            {% csrf_token %}
+            <div class="input-group">
+                <!-- Quantity selector -->
+                <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" class="form-control"
+                    style="width:80px;">
+                <!-- Add to cart button -->
+                <button type="submit" class="btn btn-primary ms-2">
+                    Add to Cart
+                </button>
+            </div>
+        </form>
+        <!-- "Back to Products" button -->
+        <a href="{% url 'products:product_list' %}" class="btn btn-secondary">
+            Go Back to Product List
+        </a>
+    </div>
+    {% endif %}
+    <br>
+    <br>
+    <p class="card-text">Vendor: {{ product.store.vendor.username }}</p>
+        <!-- Reviews Section -->
+        <hr>
+        <h3>Reviews</h3>
+        {% if product.reviews.all %}
+        {% for review in product.reviews.all %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <strong>{{ review.title }}</strong> - Rating: {{ review.rating }}/5
+                    {% if review.verified %}
+                    <small class="text-success">(Verified Purchase)</small>
+                    {% endif %}
+                </h5>
+                <p class="card-text">{{ review.content }}</p>
+                <p class="card-text"><small class="text-muted">By {{ review.reviewer.username }} on {{ review.created_at|date:"F j, Y, g:i a" }}</small></p>
+            </div>
+        </div>
+        {% empty %}
+        <p>No reviews yet.</p>
+        {% endfor %}
+        {% endif %}
+        
+        <!-- Button/link to add a review (for buyers) -->
+        {% if user.is_authenticated and user.profile.account_type == "buyer" %}
+        <a href="{% url 'reviews:add_review' product.id %}" class="btn btn-outline-primary mt-3">Add a Review</a>
+        {% endif %}
+</div>
+{% endblock %}

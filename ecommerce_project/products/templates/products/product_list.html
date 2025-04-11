@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Product List</h2>
+    <div class="row">
+    {% for product in products %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                {% if product.image %}
+                <a href="{% url 'products:product_detail' product.id %}">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'products:product_detail' product.id %}">{{ product.name }}</a></h5>
+                    <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                    <p class="card-text"><strong>R {{ product.price }}</strong></p>
+                    <!-- Show available stock to both buyer and vendors -->
+                    <p class="card-text">Stock Available: {{ product.stock }}</p>
+                    <!-- Makes the vendor name clickable -->
+                    <p class="card-text">
+                        Vendor:
+                        <a href="{% url 'products:vendor_products' product.store.vendor.id %}">
+                            {{ product.store.vendor.username }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No products available.</p>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
